@@ -1,6 +1,7 @@
 package com.silent.createwingsplus;
 
 import com.silent.createwingsplus.block.ModBlocks;
+import com.silent.createwingsplus.block.entity.ModBlockEntities;
 import com.silent.createwingsplus.item.ModItems;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
@@ -51,6 +52,7 @@ public class WingsPlus {
         ModItems.register(modEventBus);
         REGISTRATE.setCreativeTab(AllCreativeModeTabs.MAIN_TAB);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
         //ModBlocks.registerC();
 
         // Register the item to a creative tab

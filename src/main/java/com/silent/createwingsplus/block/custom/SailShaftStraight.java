@@ -1,118 +1,106 @@
 package com.silent.createwingsplus.block.custom;
 
-import java.util.Objects;
-import java.util.function.Predicate;
-
-import com.google.common.base.Predicates;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.decoration.encasing.EncasableBlock;
-import com.simibubi.create.content.decoration.girder.GirderEncasedShaftBlock;
+import com.silent.createwingsplus.block.entity.ModBlockEntities;
+import com.silent.createwingsplus.block.entity.SailShaftStraightEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
-import com.simibubi.create.content.kinetics.simpleRelays.AbstractSimpleShaftBlock;
-import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
-import com.simibubi.create.content.kinetics.steamEngine.PoweredShaftBlock;
-import com.simibubi.create.foundation.placement.PoleHelper;
+import com.simibubi.create.foundation.block.IBE;
 
-import com.tterrag.registrate.util.entry.BlockEntry;
-import net.createmod.catnip.placement.IPlacementHelper;
-import net.createmod.catnip.placement.PlacementHelpers;
-import net.createmod.catnip.placement.PlacementOffset;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 
-public class SailShaftStraight extends AbstractSimpleShaftBlock implements EncasableBlock {
+public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStraightEntity> {
 
-    public static final int placementHelperId = PlacementHelpers.register(new SailShaftStraight.PlacementHelper());
-
-    public SailShaftStraight(BlockBehaviour.Properties properties) {
+    public SailShaftStraight(Properties properties) {
         super(properties);
     }
 
-    public static boolean isShaft(BlockState state) {
-        return AllBlocks.SHAFT.has(state);
+    @Override
+    public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+        // onBlockAdded is useless for init, as sometimes the BE gets re-instantiated
+
+        // however, if a block change occurs that does not change kinetic connections,
+        // we can prevent a major re-propagation here
+
+        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+        if (blockEntity instanceof KineticBlockEntity kineticBlockEntity) {
+            kineticBlockEntity.preventSpeedUpdate = 0;
+
+            if (oldState.getBlock() != state.getBlock())
+                return;
+            if (state.hasBlockEntity() != oldState.hasBlockEntity())
+                return;
+            if (!areStatesKineticallyEquivalent(oldState, state))
+                return;
+
+            kineticBlockEntity.preventSpeedUpdate = 2;
+        }
     }
 
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState stateForPlacement = super.getStateForPlacement(context);
-        return pickCorrectShaftType(stateForPlacement, context.getLevel(), context.getClickedPos());
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        IBE.onRemove(pState, pLevel, pPos, pNewState);
     }
 
-    public static BlockState pickCorrectShaftType(BlockState stateForPlacement, Level level, BlockPos pos) {
-        return PoweredShaftBlock.stillValid(stateForPlacement, level, pos) ? PoweredShaftBlock.getEquivalent(stateForPlacement) : stateForPlacement;
+    @Override
+    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+        return getRotationAxis(state) == Axis.Y;
     }
 
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return AllShapes.SIX_VOXEL_POLE.get((Direction.Axis)state.getValue(AXIS));
+    @Override
+    public Axis getRotationAxis(BlockState state) {
+        return getRotationAxis(state);
+    }
+
+    protected boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState newState) {
+        if (oldState.getBlock() != newState.getBlock())
+            return false;
+        return getRotationAxis(newState) == getRotationAxis(oldState);
+    }
+
+    @Override
+    public void updateIndirectNeighbourShapes(BlockState stateIn, LevelAccessor worldIn, BlockPos pos, int flags,
+                                              int count) {
+        if (worldIn.isClientSide())
+            return;
+
+        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+        if (!(blockEntity instanceof KineticBlockEntity kbe))
+            return;
+
+        if (kbe.preventSpeedUpdate > 0)
+            return;
+
+        // Remove previous information when block is added
+        kbe.warnOfMovement();
+        kbe.clearKineticInformation();
+        kbe.updateSpeed = true;
     }
 
     public float getParticleTargetRadius() {
-        return 0.35F;
+        return .65f;
     }
 
     public float getParticleInitialRadius() {
-        return 0.125F;
+        return .75f;
     }
 
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!player.isShiftKeyDown() && player.mayBuild()) {
-            ItemInteractionResult result = this.tryEncase(state, level, pos, stack, player, hand, hitResult);
-            if (result.consumesAction()) {
-                return result;
-            } else if (AllBlocks.METAL_GIRDER.isIn(stack) && state.getValue(AXIS) != Axis.Y) {
-                KineticBlockEntity.switchToBlockState(level, pos, (BlockState)((BlockState)AllBlocks.METAL_GIRDER_ENCASED_SHAFT.getDefaultState().setValue(WATERLOGGED, (Boolean)state.getValue(WATERLOGGED))).setValue(GirderEncasedShaftBlock.HORIZONTAL_AXIS, state.getValue(AXIS) == Axis.Z ? Axis.Z : Axis.X));
-                if (!level.isClientSide && !player.isCreative()) {
-                    stack.shrink(1);
-                    if (stack.isEmpty()) {
-                        player.setItemInHand(hand, ItemStack.EMPTY);
-                    }
-                }
-
-                return ItemInteractionResult.SUCCESS;
-            } else {
-                IPlacementHelper helper = PlacementHelpers.get(placementHelperId);
-                return helper.matchesItem(stack) ? helper.getOffset(player, level, state, pos, hitResult).placeInWorld(level, (BlockItem)stack.getItem(), player, hand, hitResult) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-            }
-        } else {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        }
+    @Override
+    public Class<SailShaftStraightEntity> getBlockEntityClass() {
+        return SailShaftStraightEntity.class;
     }
 
-    @MethodsReturnNonnullByDefault
-    private static class PlacementHelper extends PoleHelper<Direction.Axis> {
-        private PlacementHelper() {
-            super((state) -> state.getBlock() instanceof AbstractSimpleShaftBlock || state.getBlock() instanceof PoweredShaftBlock, (state) -> (Direction.Axis)state.getValue(RotatedPillarKineticBlock.AXIS), RotatedPillarKineticBlock.AXIS);
-        }
-
-        public Predicate<ItemStack> getItemPredicate() {
-            return (i) -> i.getItem() instanceof BlockItem && ((BlockItem)i.getItem()).getBlock() instanceof AbstractSimpleShaftBlock;
-        }
-
-        public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
-            PlacementOffset offset = super.getOffset(player, world, state, pos, ray);
-            if (offset.isSuccessful()) {
-                offset.withTransform(offset.getTransform().andThen((s) -> world.isClientSide() ? s : ShaftBlock.pickCorrectShaftType(s, world, offset.getBlockPos())));
-            }
-
-            return offset;
-        }
+    @Override
+    public BlockEntityType<? extends SailShaftStraightEntity> getBlockEntityType() {
+        return ModBlockEntities.SAIL_SHAFT_STRAIGHT_BE.get();
     }
 }
