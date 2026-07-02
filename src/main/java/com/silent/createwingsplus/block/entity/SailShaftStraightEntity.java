@@ -99,7 +99,6 @@ public class SailShaftStraightEntity extends KineticBlockEntity {
 
         if (validationCountdown-- <= 0) {
             validationCountdown = AllConfigs.server().kinetics.kineticValidationFrequency.get();
-            validateKinetics();
         }
 
         if (getFlickerScore() > 0)
@@ -110,78 +109,6 @@ public class SailShaftStraightEntity extends KineticBlockEntity {
                 getOrCreateNetwork().updateNetwork();
             networkDirty = false;
         }
-    }
-
-    private void validateKinetics() {
-        if (hasSource()) {
-            if (!hasNetwork()) {
-                removeSource();
-                return;
-            }
-
-            if (!level.isLoaded(source))
-                return;
-
-            BlockEntity blockEntity = level.getBlockEntity(source);
-            KineticBlockEntity sourceBE =
-                    blockEntity instanceof KineticBlockEntity ? (KineticBlockEntity) blockEntity : null;
-            if (sourceBE == null || sourceBE.getTheoreticalSpeed() == 0) {
-                removeSource();
-                detachKinetics();
-                return;
-            }
-
-            return;
-        }
-
-        if (speed != 0) {
-            if (getGeneratedSpeed() == 0)
-                speed = 0;
-        }
-    }
-
-    public void updateFromNetwork(float maxStress, float currentStress, int networkSize) {
-        networkDirty = false;
-        this.capacity = maxStress;
-        this.stress = currentStress;
-        this.networkSize = networkSize;
-        boolean overStressed = maxStress < currentStress && IRotate.StressImpact.isEnabled();
-        setChanged();
-
-        if (overStressed != this.overStressed) {
-            float prevSpeed = getSpeed();
-            this.overStressed = overStressed;
-            onSpeedChanged(prevSpeed);
-            sendData();
-        }
-    }
-
-    protected KineticsChangeEvent makeComputerKineticsChangeEvent() {
-        return new KineticsChangeEvent(speed, capacity, stress, overStressed);
-    }
-
-    protected Block getStressConfigKey() {
-        return getBlockState().getBlock();
-    }
-
-    public float calculateStressApplied() {
-        float impact = (float) BlockStressValues.getImpact(getStressConfigKey());
-        this.lastStressApplied = impact;
-        return impact;
-    }
-
-    public float calculateAddedStressCapacity() {
-        float capacity = (float) BlockStressValues.getCapacity(getStressConfigKey());
-        this.lastCapacityProvided = capacity;
-        return capacity;
-    }
-
-    public void onSpeedChanged(float previousSpeed) {
-        boolean fromOrToZero = (previousSpeed == 0) != (getSpeed() == 0);
-        boolean directionSwap = !fromOrToZero && Math.signum(previousSpeed) != Math.signum(getSpeed());
-        if (fromOrToZero || directionSwap)
-            flickerTally = getFlickerScore() + 5;
-        setChanged();
     }
 
     @Override
@@ -224,10 +151,6 @@ public class SailShaftStraightEntity extends KineticBlockEntity {
         super.write(compound, registries, clientPacket);
     }
 
-    public boolean needsSpeedUpdate() {
-        return updateSpeed;
-    }
-
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         boolean overStressedBefore = overStressed;
@@ -264,137 +187,5 @@ public class SailShaftStraightEntity extends KineticBlockEntity {
 
         if (clientPacket)
             CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> VisualizationHelper.queueUpdate(this));
-    }
-
-    public float getGeneratedSpeed() {
-        return 0;
-    }
-
-    public boolean isSource() {
-        return getGeneratedSpeed() != 0;
-    }
-
-    public float getSpeed() {
-        if (overStressed || (level != null && level.tickRateManager().isFrozen()))
-            return 0;
-        return getTheoreticalSpeed();
-    }
-
-    public float getTheoreticalSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
-    public boolean hasSource() {
-        return source != null;
-    }
-
-    public void setSource(BlockPos source) {
-        this.source = source;
-        if (level == null || level.isClientSide)
-            return;
-
-        BlockEntity blockEntity = level.getBlockEntity(source);
-        if (!(blockEntity instanceof KineticBlockEntity sourceBE)) {
-            removeSource();
-            return;
-        }
-
-        setNetwork(sourceBE.network);
-        copySequenceContextFrom(sourceBE);
-    }
-
-    protected void copySequenceContextFrom(KineticBlockEntity sourceBE) {
-        sequenceContext = sourceBE.sequenceContext;
-    }
-
-    public void removeSource() {
-        float prevSpeed = getSpeed();
-
-        speed = 0;
-        source = null;
-        setNetwork(null);
-        sequenceContext = null;
-
-        onSpeedChanged(prevSpeed);
-    }
-
-    public void setNetwork(@Nullable Long networkIn) {
-        if (Objects.equals(network, networkIn))
-            return;
-        if (network != null)
-            getOrCreateNetwork().remove(this);
-
-        network = networkIn;
-        setChanged();
-
-        if (networkIn == null)
-            return;
-
-        network = networkIn;
-        KineticNetwork network = getOrCreateNetwork();
-        network.initialized = true;
-        network.add(this);
-    }
-
-    public KineticNetwork getOrCreateNetwork() {
-        return Create.TORQUE_PROPAGATOR.getOrCreateNetworkFor(this);
-    }
-
-    public boolean hasNetwork() {
-        return network != null;
-    }
-
-    public void attachKinetics() {
-        updateSpeed = false;
-        RotationPropagator.handleAdded(level, worldPosition, this);
-    }
-
-    public void detachKinetics() {
-        RotationPropagator.handleRemoved(level, worldPosition, this);
-    }
-
-    @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-    }
-
-    public void clearKineticInformation() {
-        speed = 0;
-        source = null;
-        network = null;
-        overStressed = false;
-        stress = 0;
-        capacity = 0;
-        lastStressApplied = 0;
-        lastCapacityProvided = 0;
-    }
-
-    public void warnOfMovement() {
-        wasMoved = true;
-    }
-
-    public int getFlickerScore() {
-        return flickerTally;
-    }
-
-    public static float convertToDirection(float axisSpeed, Direction d) {
-        return d.getAxisDirection() == Direction.AxisDirection.POSITIVE ? axisSpeed : -axisSpeed;
-    }
-
-    public static float convertToLinear(float speed) {
-        return speed / 512f;
-    }
-
-    public static float convertToAngular(float speed) {
-        // speed (rpm) * 360 (revolution->deg) / 60 (min->sec) / 20 (sec->tick)
-        // rpm -> deg/tick
-        return speed * 360f / 60f / 20f;
-    }
-
-    public boolean isOverStressed() {
-        return overStressed;
     }
 }

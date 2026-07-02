@@ -12,16 +12,28 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 
 public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStraightEntity> {
 
-    public SailShaftStraight(Properties properties) {
+    public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
+
+    public SailShaftStraight(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(BlockStateProperties.AXIS, Direction.Axis.Y));
+    }
+
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        // This registers the 'axis' property so Minecraft recognizes it
+        builder.add(BlockStateProperties.AXIS);
     }
 
     @Override
@@ -53,18 +65,12 @@ public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStra
 
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-        return getRotationAxis(state) == Axis.Y;
+        return face.getAxis() == state.getValue(AXIS);
     }
 
     @Override
     public Axis getRotationAxis(BlockState state) {
-        return getRotationAxis(state);
-    }
-
-    protected boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState newState) {
-        if (oldState.getBlock() != newState.getBlock())
-            return false;
-        return getRotationAxis(newState) == getRotationAxis(oldState);
+        return state.getValue(AXIS);
     }
 
     @Override
@@ -84,14 +90,6 @@ public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStra
         kbe.warnOfMovement();
         kbe.clearKineticInformation();
         kbe.updateSpeed = true;
-    }
-
-    public float getParticleTargetRadius() {
-        return .65f;
-    }
-
-    public float getParticleInitialRadius() {
-        return .75f;
     }
 
     @Override
