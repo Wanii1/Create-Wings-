@@ -16,12 +16,10 @@
       "y": 270
     },
     "facing=up": {
-      "model": "createwingsplus:block/angled_sail",
-      "x": 90
+      "model": "createwingsplus:block/angled_sail"
     },
     "facing=down": {
-      "model": "createwingsplus:block/angled_sail",
-      "x": 270
+      "model": "createwingsplus:block/angled_sail"
     }
   }
 }

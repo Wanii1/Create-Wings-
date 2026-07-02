@@ -1,0 +1,7 @@
+{
+  "selector": "createwingsplus:angled_sail",
+  "priority": 1005,
+  "properties": {
+    "sable:mass": 0.125
+  }
+}

@@ -1,42 +1,85 @@
 package com.silent.createwingsplus.block.custom;
 
-import com.mojang.serialization.MapCodec;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.bearing.SailBlock;
+import dev.ryanhcode.sable.api.block.BlockSubLevelLiftProvider;
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AngledSail extends DirectionalBlock {
-    public static final MapCodec<AngledSail> CODEC = simpleCodec(AngledSail::new);
-    private static final VoxelShape SHAPE = Block.box(0.0, 5.0, 0.0, 16.0, 10.0, 16.0);
+import static net.createmod.catnip.math.VoxelShaper.axisAsFace;
+import static net.createmod.catnip.math.VoxelShaper.forDirectional;
 
+public class AngledSail extends SailBlock implements BlockSubLevelLiftProvider {
+    private static final VoxelShape SHAPE1 = Block.box(0.0,5.0,0.0,8.0,10.0,16.0);
+    private static final VoxelShape SHAPE2 = Block.box(8.0,5.0,0.0,16.0,10.0,8.0);
+    private static final VoxelShape SHAPE = Shapes.join(SHAPE1, SHAPE2, BooleanOp.OR);
+    private static final VoxelShaper CSHAPE = VoxelShaper.forDirectional(SHAPE, Direction.NORTH);
     public AngledSail(Properties properties) {
-        super(properties);
+        super(properties, false, DyeColor.WHITE);
+    }
+
+
+    @Override
+    public void applyDye(BlockState state, Level world, BlockPos pos, Vec3 hit, @Nullable DyeColor color) {
+        return;
+    }
+
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        DyeColor color = DyeColor.getColor(stack);
+        if (color != null) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+    public @NotNull Direction sable$getNormal(final BlockState state) {
+        return Direction.DOWN;
     }
 
     @Override
-    protected MapCodec<? extends DirectionalBlock> codec() {
-        return CODEC;
+    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_, CollisionContext p_220053_4_) {
+        if (state.getValue(BlockStateProperties.FACING) == Direction.UP || state.getValue(BlockStateProperties.FACING) == Direction.DOWN) {
+            return CSHAPE.get(Direction.NORTH);
+        }
+
+        return CSHAPE.get(state.getValue(FACING));
     }
 
     @Override
-    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
-            return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+    public float sable$getParallelDragScalar() {
+        if (AllBlocks.SAIL.get() instanceof BlockSubLevelLiftProvider blockSubLevelLiftProvider){
+            return blockSubLevelLiftProvider.sable$getParallelDragScalar() * 0.5f;
+        }
+        return 0.0f;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+    public float sable$getLiftScalar() {
+        if (AllBlocks.SAIL.get() instanceof BlockSubLevelLiftProvider blockSubLevelLiftProvider){
+            return blockSubLevelLiftProvider.sable$getLiftScalar() * 0.5f;
+        }
+        return 0.0f;
     }
 }

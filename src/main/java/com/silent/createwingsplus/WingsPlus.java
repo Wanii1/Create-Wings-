@@ -2,6 +2,12 @@ package com.silent.createwingsplus;
 
 import com.silent.createwingsplus.block.ModBlocks;
 import com.silent.createwingsplus.item.ModItems;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
+import com.tterrag.registrate.Registrate;
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
@@ -25,19 +31,27 @@ public class WingsPlus {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
+            .setTooltipModifierFactory(item ->
+                    new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                            .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
+            );
+
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public WingsPlus(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-
+        REGISTRATE.registerEventListeners(modEventBus);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
         ModItems.register(modEventBus);
+        REGISTRATE.setCreativeTab(AllCreativeModeTabs.MAIN_TAB);
         ModBlocks.register(modEventBus);
+        //ModBlocks.registerC();
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -54,6 +68,7 @@ public class WingsPlus {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS){
             event.accept(ModBlocks.ANGLED_SAIL);
+            event.accept(ModBlocks.SAIL_SHAFT_STRAIGHT);
         }
     }
 
