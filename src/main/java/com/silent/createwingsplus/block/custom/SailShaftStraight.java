@@ -37,10 +37,7 @@ public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStra
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction.Axis axis = context.getHorizontalDirection().getAxis();
-        Direction direction = Direction.NORTH;
-        if (axis == Axis.X){
-            direction = Direction.EAST;
-        }
+        Direction direction = Direction.getFacingAxis(context.getPlayer(), axis);
         return this.defaultBlockState().setValue(BlockStateProperties.AXIS, axis).setValue(BlockStateProperties.FACING, direction);
     }
 

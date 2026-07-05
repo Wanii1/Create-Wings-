@@ -1,9 +1,12 @@
 package com.silent.createwingsplus.block.custom;
 
+import com.silent.createwingsplus.block.AbstractAngleShaftBlock;
 import com.silent.createwingsplus.block.entity.ModBlockEntities;
 import com.silent.createwingsplus.block.entity.SailShaftAngledEntity;
 import com.silent.createwingsplus.block.entity.SailShaftStraightEntity;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllShapes;
+import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -12,8 +15,14 @@ import dev.ryanhcode.sable.api.block.BlockSubLevelLiftProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,12 +30,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 
-public class SailShaftAngled extends DirectionalKineticBlock implements IBE<SailShaftAngledEntity>, BlockSubLevelLiftProvider {
+public class SailShaftAngled extends AbstractAngleShaftBlock implements IBE<SailShaftAngledEntity> {
 
     private static final VoxelShape SHAPE = Block.box(0.0,5.0,0.0,16.0,10.0,16.0);
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
@@ -45,59 +56,18 @@ public class SailShaftAngled extends DirectionalKineticBlock implements IBE<Sail
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.AXIS);
         builder.add(BlockStateProperties.FACING);
+        builder.add(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
     }
 
-    @Override
-    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-        return face.getAxis() != state.getValue(AXIS);
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
-    @Override
-    public Axis getRotationAxis(BlockState state) {
-        if (state.getValue(BlockStateProperties.FACING) == Direction.EAST || state.getValue(BlockStateProperties.FACING) == Direction.WEST){
-            return Axis.X;
-        }
-        else if (state.getValue(BlockStateProperties.FACING) == Direction.NORTH || state.getValue(BlockStateProperties.FACING) == Direction.SOUTH) {
-            return Axis.Z;
-        }
-        else {
-            return Axis.Y;
-        }
-    }
-
-    @Override
     public Class<SailShaftAngledEntity> getBlockEntityClass() {
         return SailShaftAngledEntity.class;
     }
 
-    @Override
     public BlockEntityType<? extends SailShaftAngledEntity> getBlockEntityType() {
-        return ModBlockEntities.SAIL_SHAFT_ANGLED_BE.get();
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_, CollisionContext p_220053_4_) {
-        return SHAPE;
-    }
-
-    @Override
-    public @NotNull Direction sable$getNormal(final BlockState state) {
-        return Direction.DOWN;
-    }
-
-    @Override
-    public float sable$getParallelDragScalar() {
-        if (AllBlocks.SAIL.get() instanceof BlockSubLevelLiftProvider blockSubLevelLiftProvider){
-            return blockSubLevelLiftProvider.sable$getParallelDragScalar() * 0.5f;
-        }
-        return 0.0f;
-    }
-
-    @Override
-    public float sable$getLiftScalar() {
-        if (AllBlocks.SAIL.get() instanceof BlockSubLevelLiftProvider blockSubLevelLiftProvider){
-            return blockSubLevelLiftProvider.sable$getLiftScalar() * 0.5f;
-        }
-        return 0.0f;
+        return (BlockEntityType)ModBlockEntities.SAIL_SHAFT_ANGLED_BE.get();
     }
 }
