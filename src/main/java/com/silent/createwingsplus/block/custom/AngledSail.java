@@ -25,9 +25,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.createmod.catnip.math.VoxelShaper.axisAsFace;
-import static net.createmod.catnip.math.VoxelShaper.forDirectional;
-
 public class AngledSail extends SailBlock implements BlockSubLevelLiftProvider {
     private static final VoxelShape SHAPE1 = Block.box(0.0,5.0,0.0,8.0,10.0,16.0);
     private static final VoxelShape SHAPE2 = Block.box(8.0,5.0,0.0,16.0,10.0,8.0);
@@ -42,7 +39,6 @@ public class AngledSail extends SailBlock implements BlockSubLevelLiftProvider {
     public void applyDye(BlockState state, Level world, BlockPos pos, Vec3 hit, @Nullable DyeColor color) {
         return;
     }
-
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {

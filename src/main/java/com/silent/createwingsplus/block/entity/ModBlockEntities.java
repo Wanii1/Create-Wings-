@@ -3,7 +3,6 @@ package com.silent.createwingsplus.block.entity;
 import com.silent.createwingsplus.WingsPlus;
 import com.silent.createwingsplus.block.ModBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
