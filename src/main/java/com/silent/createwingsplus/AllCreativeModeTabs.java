@@ -11,7 +11,7 @@ public class AllCreativeModeTabs {
     public static final RegistryEntry<CreativeModeTab, CreativeModeTab> MAIN_TAB =
             WingsPlus.REGISTRATE.defaultCreativeTab("main_tab", builder ->
                     builder
-                            .title(Component.translatable("itemGroup." + WingsPlus.MOD_ID))
+                            .title(Component.translatable("Create: Wings Plus"))
                             .icon(() -> new ItemStack(Items.HONEYCOMB))  // Replace with your own icon
                             .build()
             ).register();

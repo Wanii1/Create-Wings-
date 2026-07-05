@@ -2,9 +2,9 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "create:canvas_white_shaft_angled",
-		"1": "create:block/sail/frame",
-		"particle": "create:canvas_white_shaft_angled"
+		"0": "createwingsplus:block/canvas_white_shaft_angled",
+		"1": "createwingsplus:block/frame",
+		"particle": "createwingsplus:block/canvas_white_shaft_angled"
 	},
 	"elements": [
 		{

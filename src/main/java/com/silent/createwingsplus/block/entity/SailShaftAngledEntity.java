@@ -1,6 +1,8 @@
 package com.silent.createwingsplus.block.entity;
 
-import com.simibubi.create.content.kinetics.base.*;
+import com.simibubi.create.content.kinetics.base.DirectionalShaftHalvesBlockEntity;
+import com.simibubi.create.content.kinetics.base.IRotate;
+import com.simibubi.create.content.kinetics.base.KineticEffectHandler;
 import com.simibubi.create.content.kinetics.simpleRelays.SimpleKineticBlockEntity;
 import com.simibubi.create.content.kinetics.transmission.sequencer.SequencedGearshiftBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -11,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SailShaftStraightEntity extends SimpleKineticBlockEntity {
+public class SailShaftAngledEntity extends DirectionalShaftHalvesBlockEntity {
     public @Nullable Long network;
     public @Nullable BlockPos source;
     public boolean updateSpeed;
@@ -20,8 +22,8 @@ public class SailShaftStraightEntity extends SimpleKineticBlockEntity {
 
     public SequencedGearshiftBlockEntity.SequenceContext sequenceContext;
 
-    public SailShaftStraightEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.SAIL_SHAFT_STRAIGHT_BE.get(), pos, state);
+    public SailShaftAngledEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.SAIL_SHAFT_ANGLED_BE.get(), pos, state);
         effects = new KineticEffectHandler(this);
         updateSpeed = true;
     }

@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "createwingsplus:block/sail_shaft_angled",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "createwingsplus:block/sail_shaft_angled"
+    },
+    "facing=east": {
+      "model": "createwingsplus:block/sail_shaft_angled",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "createwingsplus:block/sail_shaft_angled",
+      "y": 90
+    },
+    "facing=up": {
+      "model": "createwingsplus:block/sail_shaft_angled"
+    },
+    "facing=down": {
+      "model": "createwingsplus:block/sail_shaft_angled"
+    }
+  }
+}

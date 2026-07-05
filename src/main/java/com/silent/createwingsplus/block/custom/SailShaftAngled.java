@@ -1,8 +1,10 @@
 package com.silent.createwingsplus.block.custom;
 
 import com.silent.createwingsplus.block.entity.ModBlockEntities;
+import com.silent.createwingsplus.block.entity.SailShaftAngledEntity;
 import com.silent.createwingsplus.block.entity.SailShaftStraightEntity;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -15,7 +17,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,22 +26,19 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 
-public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStraightEntity>, BlockSubLevelLiftProvider {
+public class SailShaftAngled extends DirectionalKineticBlock implements IBE<SailShaftAngledEntity>, BlockSubLevelLiftProvider {
 
     private static final VoxelShape SHAPE = Block.box(0.0,5.0,0.0,16.0,10.0,16.0);
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
 
-    public SailShaftStraight(BlockBehaviour.Properties properties) {
+    public SailShaftAngled(Properties properties) {
         super(properties);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Direction.Axis axis = context.getHorizontalDirection().getAxis();
-        Direction direction = Direction.NORTH;
-        if (axis == Axis.X){
-            direction = Direction.EAST;
-        }
+        Axis axis = context.getHorizontalDirection().getAxis();
+        Direction direction = Direction.getFacingAxis(context.getPlayer(), axis);
         return this.defaultBlockState().setValue(BlockStateProperties.AXIS, axis).setValue(BlockStateProperties.FACING, direction);
     }
 
@@ -51,7 +49,7 @@ public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStra
 
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-        return face.getAxis() == state.getValue(AXIS);
+        return face.getAxis() != state.getValue(AXIS);
     }
 
     @Override
@@ -68,20 +66,19 @@ public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStra
     }
 
     @Override
-    public Class<SailShaftStraightEntity> getBlockEntityClass() {
-        return SailShaftStraightEntity.class;
+    public Class<SailShaftAngledEntity> getBlockEntityClass() {
+        return SailShaftAngledEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends SailShaftStraightEntity> getBlockEntityType() {
-        return ModBlockEntities.SAIL_SHAFT_STRAIGHT_BE.get();
+    public BlockEntityType<? extends SailShaftAngledEntity> getBlockEntityType() {
+        return ModBlockEntities.SAIL_SHAFT_ANGLED_BE.get();
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_, CollisionContext p_220053_4_) {
         return SHAPE;
     }
-
 
     @Override
     public @NotNull Direction sable$getNormal(final BlockState state) {

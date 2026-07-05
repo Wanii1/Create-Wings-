@@ -1,0 +1,7 @@
+{
+  "selector": "createwingsplus:sail_shaft_straight",
+  "priority": 1005,
+  "properties": {
+    "sable:mass": 0.25
+  }
+}
