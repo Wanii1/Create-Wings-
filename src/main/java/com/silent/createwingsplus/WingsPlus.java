@@ -52,7 +52,6 @@ public class WingsPlus {
         REGISTRATE.setCreativeTab(AllCreativeModeTabs.MAIN_TAB);
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
-        //ModBlocks.registerC();
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);

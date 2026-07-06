@@ -1,7 +1,7 @@
 package com.silent.createwingsplus.block.entity;
 
-import com.simibubi.create.content.kinetics.base.DirectionalShaftHalvesBlockEntity;
 import com.simibubi.create.content.kinetics.base.IRotate;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticEffectHandler;
 import com.simibubi.create.content.kinetics.transmission.sequencer.SequencedGearshiftBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SailShaftAngledEntity extends DirectionalShaftHalvesBlockEntity {
+public class SailTorsionSpringEntity extends KineticBlockEntity {
     public @Nullable Long network;
     public @Nullable BlockPos source;
     public boolean updateSpeed;
@@ -21,8 +21,8 @@ public class SailShaftAngledEntity extends DirectionalShaftHalvesBlockEntity {
 
     public SequencedGearshiftBlockEntity.SequenceContext sequenceContext;
 
-    public SailShaftAngledEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.SAIL_SHAFT_ANGLED_BE.get(), pos, state);
+    public SailTorsionSpringEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.SAIL_TORSION_SPRING_BE.get(), pos, state);
         effects = new KineticEffectHandler(this);
         updateSpeed = true;
     }
@@ -37,7 +37,7 @@ public class SailShaftAngledEntity extends DirectionalShaftHalvesBlockEntity {
         if (!canPropagateDiagonally(block, state))
             return neighbours;
 
-        Direction.Axis axis = Direction.Axis.Y;
+        Direction.Axis axis = Direction.Axis.Y;//.getRotationAxis(state);
         BlockPos.betweenClosedStream(new BlockPos(-1, -1, -1), new BlockPos(1, 1, 1))
                 .forEach(offset -> {
                     if (axis.choose(offset.getX(), offset.getY(), offset.getZ()) != 0)

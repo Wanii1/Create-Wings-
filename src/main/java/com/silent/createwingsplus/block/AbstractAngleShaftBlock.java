@@ -53,10 +53,6 @@ public abstract class AbstractAngleShaftBlock extends DirectionalAxisKineticBloc
             case WEST -> secondDirection = Direction.NORTH;
             case UP -> secondDirection = Direction.NORTH;
             case DOWN -> secondDirection = Direction.NORTH;
-            //case X -> secondDirectionAxis = axisAlongFirst ? Direction.Axis.X : Direction.Axis.Z;
-            //case Y -> secondDirectionAxis = axisAlongFirst ? Direction.Axis.Z : Direction.Axis.X;
-            //case Z -> secondDirectionAxis = axisAlongFirst ? Direction.Axis.X : Direction.Axis.Z;
-            //default -> throw new IllegalStateException("Unknown axis");
         }
 
         return new Direction[]{facing.getOpposite(), secondDirection};

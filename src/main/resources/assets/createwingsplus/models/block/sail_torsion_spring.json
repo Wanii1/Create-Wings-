@@ -3,8 +3,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "createwingsplus:block/angled_sail",
-		"1": "createwingsplus:block/frame_glue",
-		"2": "createwingsplus:block/frame",
+		"1": "createwingsplus:block/frame",
 		"particle": "createwingsplus:block/angled_sail"
 	},
 	"elements": [
@@ -61,18 +60,18 @@
 			"to": [13, 9, 16],
 			"rotation": {"angle": 0, "axis": "y", "origin": [11, 15, 8]},
 			"faces": {
-				"north": {"uv": [3, 6, 13, 9], "texture": "#2"},
-				"south": {"uv": [3, 3, 13, 6], "texture": "#2"},
-				"down": {"uv": [3, 14, 13, 16], "rotation": 180, "texture": "#2"}
+				"north": {"uv": [3, 6, 13, 9], "texture": "#1"},
+				"south": {"uv": [3, 3, 13, 6], "texture": "#1"},
+				"down": {"uv": [3, 14, 13, 16], "rotation": 180, "texture": "#1"}
 			}
 		},
 		{
 			"from": [0, 6, 3],
 			"to": [2, 9, 13],
 			"faces": {
-				"east": {"uv": [3, 6, 13, 9], "texture": "#2"},
-				"west": {"uv": [3, 3, 13, 6], "texture": "#2"},
-				"down": {"uv": [14, 3, 16, 13], "rotation": 180, "texture": "#2"}
+				"east": {"uv": [3, 6, 13, 9], "texture": "#1"},
+				"west": {"uv": [3, 3, 13, 6], "texture": "#1"},
+				"down": {"uv": [14, 3, 16, 13], "rotation": 180, "texture": "#1"}
 			}
 		},
 		{
@@ -88,9 +87,9 @@
 			"from": [14, 6, 3],
 			"to": [16, 9, 13],
 			"faces": {
-				"east": {"uv": [3, 3, 13, 6], "texture": "#2"},
-				"west": {"uv": [3, 6, 13, 9], "texture": "#2"},
-				"down": {"uv": [0, 3, 2, 13], "rotation": 180, "texture": "#2"}
+				"east": {"uv": [3, 3, 13, 6], "texture": "#1"},
+				"west": {"uv": [3, 6, 13, 9], "texture": "#1"},
+				"down": {"uv": [0, 3, 2, 13], "rotation": 180, "texture": "#1"}
 			}
 		},
 		{

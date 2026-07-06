@@ -1,6 +1,8 @@
 {
   "values": [
     "createwingsplus:angled_sail",
-    "createwingsplus:sail_shaft_straight"
+    "createwingsplus:sail_shaft_straight",
+    "createwingsplus:sail_shaft_angled",
+    "createwingsplus:sail_glue"
   ]
 }

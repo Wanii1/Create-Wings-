@@ -14,6 +14,8 @@ public class ModBlockEntities {
 
     public static final Supplier<BlockEntityType<SailShaftStraightEntity>> SAIL_SHAFT_STRAIGHT_BE = BLOCK_ENTITIES.register("sail_shaft_straight_be", () -> BlockEntityType.Builder.of(SailShaftStraightEntity::new, ModBlocks.SAIL_SHAFT_STRAIGHT.get()).build(null));
     public static final Supplier<BlockEntityType<SailShaftAngledEntity>> SAIL_SHAFT_ANGLED_BE = BLOCK_ENTITIES.register("sail_shaft_angled_be", () -> BlockEntityType.Builder.of(SailShaftAngledEntity::new, ModBlocks.SAIL_SHAFT_ANGLED.get()).build(null));
+    public static final Supplier<BlockEntityType<SailGlueEntity>> SAIL_GLUE_BE = BLOCK_ENTITIES.register("sail_glue_be", () -> BlockEntityType.Builder.of(SailGlueEntity::new, ModBlocks.SAIL_GLUE.get()).build(null));
+    public static final Supplier<BlockEntityType<SailTorsionSpringEntity>> SAIL_TORSION_SPRING_BE = BLOCK_ENTITIES.register("sail_torsion_spring_be", () -> BlockEntityType.Builder.of(SailTorsionSpringEntity::new, ModBlocks.SAIL_TORSION_SPRING.get()).build(null));
 
     public static void register(IEventBus eventBus){
         BLOCK_ENTITIES.register(eventBus);

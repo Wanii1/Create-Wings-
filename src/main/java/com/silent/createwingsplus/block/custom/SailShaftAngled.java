@@ -3,38 +3,21 @@ package com.silent.createwingsplus.block.custom;
 import com.silent.createwingsplus.block.AbstractAngleShaftBlock;
 import com.silent.createwingsplus.block.entity.ModBlockEntities;
 import com.silent.createwingsplus.block.entity.SailShaftAngledEntity;
-import com.silent.createwingsplus.block.entity.SailShaftStraightEntity;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
-import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
-import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
-
-import dev.ryanhcode.sable.api.block.BlockSubLevelLiftProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 
 public class SailShaftAngled extends AbstractAngleShaftBlock implements IBE<SailShaftAngledEntity> {
