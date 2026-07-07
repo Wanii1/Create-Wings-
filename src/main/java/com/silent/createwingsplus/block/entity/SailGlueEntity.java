@@ -29,7 +29,7 @@ import java.util.List;
 
 public class SailGlueEntity extends GeneratingKineticBlockEntity implements IBearingBlockEntity, IDisplayAssemblyExceptions {
 
-    protected ScrollOptionBehaviour<RotationMode> movementMode;
+    //protected ScrollOptionBehaviour<RotationMode> movementMode;
     protected ControlledContraptionEntity movedContraption;
     protected float angle;
     protected boolean running;
@@ -55,8 +55,8 @@ public class SailGlueEntity extends GeneratingKineticBlockEntity implements IBea
 
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
-        this.movementMode = new ScrollOptionBehaviour(IControlContraption.RotationMode.class, CreateLang.translateDirect("contraptions.movement_mode", new Object[0]), this, this.getMovementModeSlot());
-        behaviours.add(this.movementMode);
+        //this.movementMode = new ScrollOptionBehaviour(IControlContraption.RotationMode.class, CreateLang.translateDirect("contraptions.movement_mode", new Object[0]), this, this.getMovementModeSlot());
+        //behaviours.add(this.movementMode);
         this.registerAwardables(behaviours, new CreateAdvancement[]{AllAdvancements.CONTRAPTION_ACTORS});
     }
 
@@ -245,8 +245,8 @@ public class SailGlueEntity extends GeneratingKineticBlockEntity implements IBea
 
                 this.assemble();
             } else {
-                boolean canDisassemble = this.movementMode.get() == RotationMode.ROTATE_PLACE || this.isNearInitialAngle() && this.movementMode.get() == RotationMode.ROTATE_PLACE_RETURNED;
-                if (this.speed == 0.0F && (canDisassemble || this.movedContraption == null || this.movedContraption.getContraption().getBlocks().isEmpty())) {
+                //boolean canDisassemble = this.movementMode.get() == RotationMode.ROTATE_PLACE || this.isNearInitialAngle() && this.movementMode.get() == RotationMode.ROTATE_PLACE_RETURNED;
+                if (this.speed == 0.0F && (this.movedContraption == null || this.movedContraption.getContraption().getBlocks().isEmpty())) {
                     if (this.movedContraption != null) {
                         this.movedContraption.getContraption().stop(this.level);
                     }
