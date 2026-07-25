@@ -29,6 +29,7 @@ public class ModBlocks {
     public static BlockEntry<VerticalSymetricalSailShaftStraight> VERTICAL_SYMETRICAL_SAIL_SHAFT_STRAIGHT;
     public static BlockEntry<VerticalSymetricalSailShaftAngled> VERTICAL_SYMETRICAL_SAIL_SHAFT_ANGLED;
     public static BlockEntry<VerticalSymetricalSailGlue> VERTICAL_SYMETRICAL_SAIL_GLUE;
+    public static BlockEntry<VerticalAngledSymetricalSail> VERTICAL_ANGLED_SYMETRICAL_SAIL;
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block){
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);
@@ -53,6 +54,7 @@ public class ModBlocks {
         VERTICAL_SYMETRICAL_SAIL_SHAFT_STRAIGHT = WingsPlus.REGISTRATE.block("vertical_symetrical_sail_shaft_straight", VerticalSymetricalSailShaftStraight::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
         VERTICAL_SYMETRICAL_SAIL_SHAFT_ANGLED = WingsPlus.REGISTRATE.block("vertical_symetrical_sail_shaft_angled", VerticalSymetricalSailShaftAngled::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
         VERTICAL_SYMETRICAL_SAIL_GLUE = WingsPlus.REGISTRATE.block("vertical_symetrical_sail_glue", VerticalSymetricalSailGlue::new).simpleItem().register();
+        VERTICAL_ANGLED_SYMETRICAL_SAIL = WingsPlus.REGISTRATE.block("vertical_angled_symetrical_sail", VerticalAngledSymetricalSail::new).simpleItem().register();
         BLOCKS.register(eventBus);
     }
 

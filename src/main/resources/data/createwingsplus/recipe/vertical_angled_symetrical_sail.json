@@ -4,13 +4,10 @@
   "ingredients": [
     {
       "item": "createwingsplus:angled_symetrical_sail"
-    },
-    {
-      "item": "createwingsplus:angled_symetrical_sail"
     }
   ],
   "result": {
-    "count": 2,
-    "id": "createwingsplus:angled_sail"
+    "count": 1,
+    "id": "createwingsplus:vertical_angled_symetrical_sail"
   }
 }
