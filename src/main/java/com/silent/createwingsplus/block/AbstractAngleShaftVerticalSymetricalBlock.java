@@ -62,6 +62,7 @@ public abstract class AbstractAngleShaftVerticalSymetricalBlock extends Directio
         boolean axisAlongFirst = direction1.getAxisDirection() == direction2.getAxisDirection();
         return (BlockState)((BlockState)this.defaultBlockState().setValue((Property)DirectionalKineticBlock.FACING, (Comparable)direction1.getOpposite())).setValue((Property)DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, (Comparable)Boolean.valueOf(axisAlongFirst));
     )
+    }
 
     public static boolean isPositiveDirection(Direction direction) {
         return Direction.get(Direction.AxisDirection.POSITIVE, direction.getAxis()) == direction;
