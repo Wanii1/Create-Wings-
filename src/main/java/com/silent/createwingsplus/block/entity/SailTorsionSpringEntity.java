@@ -7,7 +7,6 @@ import com.silent.createwingsplus.mixin_interface.extra_kinetics.KineticBlockEnt
 import com.silent.createwingsplus.util.ExtraBlockPos;
 import com.silent.createwingsplus.util.ExtraKinetics;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
-import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticEffectHandler;
 import com.simibubi.create.content.kinetics.transmission.sequencer.SequencedGearshiftBlockEntity;
@@ -32,18 +31,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.include.com.google.common.collect.ImmutableList;
 
-import java.awt.*;
 import java.util.List;
 
 public class SailTorsionSpringEntity extends KineticBlockEntity implements ExtraKinetics {
@@ -92,9 +89,16 @@ public class SailTorsionSpringEntity extends KineticBlockEntity implements Extra
     }
 
     @Override
+    public void setLevel(Level level)
+    {
+        super.setLevel(level);
+        this.springOutput.setLevel(level);
+    }
+
+    @Override
     public void addBehaviours(final List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
-        behaviours.add(this.angleInput = new TorsionSpringScrollValueBehaviour(this).between(1, 360));
+        behaviours.add(this.angleInput = new SailTorsionSpringScrollValueBehaviour(this).between(1, 360));
         this.angleInput.onlyActiveWhen(this::showValue);
         this.angleInput.setValue(90);
     }
@@ -160,18 +164,6 @@ public class SailTorsionSpringEntity extends KineticBlockEntity implements Extra
     }
 
     public static class Output extends GeneratingKineticBlockEntity implements ExtraKinetics.ExtraKineticsBlockEntity, KineticBlockEntityExtension {
-        public static final IRotate CONFIG = new IRotate() {
-            @Override
-            public boolean hasShaftTowards(final LevelReader world, final BlockPos pos, final BlockState state, final Direction face) {
-                return face == state.getValue(SailTorsionSpring.FACING);
-            }
-
-            @Override
-            public Direction.Axis getRotationAxis(final BlockState state) {
-                return state.getValue(SailTorsionSpring.FACING).getAxis();
-            }
-        };
-
         private final SailTorsionSpringEntity parent;
 
         protected double oldAngle = 0.0f;
@@ -248,13 +240,12 @@ public class SailTorsionSpringEntity extends KineticBlockEntity implements Extra
                 }
             }
 
-            final boolean powered = this.getBlockState().getValue(SailTorsionSpring.POWERED);
             final boolean parentStopped = this.parent.getSpeed() == 0;
 
             if (this.currentState == State.TURNING && parentStopped) {
-                if (this.targetAngle != 0 || powered)
+                if (this.targetAngle != 0)
                     this.stopTurning();
-            } else if (this.currentState == State.STOPPED && parentStopped && !powered) {
+            } else if (this.currentState == State.STOPPED && parentStopped) {
                 if (this.targetAngle != 0.0) { // return back to 0 angle when not powered
                     this.beginTurnTo(0.0);
                 }
@@ -417,10 +408,10 @@ public class SailTorsionSpringEntity extends KineticBlockEntity implements Extra
         }
     }
 
-    public static class TorsionSpringScrollValueBehaviour extends ScrollValueBehaviour {
+    public static class SailTorsionSpringScrollValueBehaviour extends ScrollValueBehaviour {
 
-        public TorsionSpringScrollValueBehaviour(final SmartBlockEntity be) {
-            super(CWPLang.translate("torsion_spring.angle_limit").component(), be, new TorsionSpringValueBox());
+        public SailTorsionSpringScrollValueBehaviour(final SmartBlockEntity be) {
+            super(CWPLang.translate("sail_torsion_spring.angle_limit").component(), be, new SailTorsionSpringValueBox());
             this.withFormatter(v -> Math.max(1, v) + CreateLang.translateDirect("generic.unit.degrees")
                     .getString());
         }
@@ -437,7 +428,7 @@ public class SailTorsionSpringEntity extends KineticBlockEntity implements Extra
         }
     }
 
-    public static class TorsionSpringValueBox extends ValueBoxTransform.Sided {
+    public static class SailTorsionSpringValueBox extends ValueBoxTransform.Sided {
         @Override
         protected Vec3 getSouthLocation() {
             return VecHelper.voxelSpace(8, 8, 15.5);

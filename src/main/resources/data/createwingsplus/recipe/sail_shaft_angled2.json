@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "createwingsplus:symetrical_sail_shaft_angled"
+    },
+    {
+      "item": "createwingsplus:symetrical_sail_shaft_angled"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "id": "createwingsplus:sail_shaft_angled"
+  }
+}

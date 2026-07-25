@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "createwingsplus:block/vertical_symetrical_sail_glue"
+    },
+    "facing=south": {
+      "model": "createwingsplus:block/vertical_symetrical_sail_glue",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "createwingsplus:block/vertical_symetrical_sail_glue",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "createwingsplus:block/vertical_symetrical_sail_glue",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "createwingsplus:block/vertical_symetrical_sail_glue",
+      "x": 90
+    },
+    "facing=down": {
+      "model": "createwingsplus:block/vertical_symetrical_sail_glue",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "createwingsplus:symetrical_sail_glue"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "createwingsplus:sail_glue"
+  }
+}

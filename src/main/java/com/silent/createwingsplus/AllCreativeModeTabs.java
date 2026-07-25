@@ -1,5 +1,6 @@
 package com.silent.createwingsplus;
 
+import com.silent.createwingsplus.block.ModBlocks;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -12,7 +13,7 @@ public class AllCreativeModeTabs {
             WingsPlus.REGISTRATE.defaultCreativeTab("main_tab", builder ->
                     builder
                             .title(Component.translatable("Create: Wings Plus"))
-                            .icon(() -> new ItemStack(Items.HONEYCOMB))  // Replace with your own icon
+                            .icon(() -> new ItemStack(ModBlocks.ANGLED_SAIL))  // Replace with your own icon
                             .build()
             ).register();
 

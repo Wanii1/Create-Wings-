@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "W": {
+      "item": "create:white_sail"
+    }
+  },
+  "pattern": [
+    "WW",
+    " W"
+  ],
+  "result": {
+    "count": 3,
+    "id": "createwingsplus:angled_sail"
+  }
+}

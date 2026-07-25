@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createwingsplus:sail_shaft_angled"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createwingsplus:blocks/sail_shaft_angled"
+}

@@ -1,6 +1,7 @@
 package com.silent.createwingsplus.block;
 
 import com.silent.createwingsplus.block.entity.SailShaftAngledEntity;
+import com.silent.createwingsplus.block.entity.SymetricalSailShaftAngledEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;

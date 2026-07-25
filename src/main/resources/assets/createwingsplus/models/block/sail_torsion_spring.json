@@ -2,9 +2,9 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "createwingsplus:block/angled_sail",
+		"0": "createwingsplus:block/canvas_white_torsion_spring",
 		"1": "createwingsplus:block/frame",
-		"particle": "createwingsplus:block/angled_sail"
+		"particle": "createwingsplus:block/canvas_white_torsion_spring"
 	},
 	"elements": [
 		{

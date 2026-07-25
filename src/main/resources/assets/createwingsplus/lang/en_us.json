@@ -3,5 +3,12 @@
   "block.createwingsplus.sail_shaft_straight": "Straight Shaft Sail",
   "block.createwingsplus.sail_shaft_angled": "Angled Shaft Sail",
   "block.createwingsplus.sail_glue": "Mechanical Bearing Sail",
-  "block.createwingsplus.sail_torsion_spring": "Torsion Spring Sail"
+  "block.createwingsplus.sail_torsion_spring": "Torsion Spring Sail",
+  "block.createwingsplus.angled_symetrical_sail": "Angled Symmetrical Sail",
+  "block.createwingsplus.symetrical_sail_shaft_straight": "Straight Shaft Symmetrical Sail",
+  "block.createwingsplus.symetrical_sail_shaft_angled": "Angled Shaft Symmetrical Sail",
+  "block.createwingsplus.symetrical_sail_glue": "Mechanical Bearing Symmetrical Sail",
+  "block.createwingsplus.vertical_symetrical_sail_shaft_straight": "Vertical Straight Shaft Symmetrical Sail",
+  "block.createwingsplus.vertical_symetrical_sail_shaft_angled": "Vertical Angled Shaft Symmetrical Sail",
+  "block.createwingsplus.vertical_symetrical_sail_glue": "Vertical Mechanical Bearing Symmetrical Sail"
 }

@@ -32,18 +32,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 
-public class SailTorsionSpring extends DirectionalKineticBlock implements IBE<SailTorsionSpringEntity>, ExtraKinetics.ExtraKineticsBlock, IDirectionalAnalogOutput {
-    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+public class SailTorsionSpring extends DirectionalKineticBlock implements IBE<SailTorsionSpringEntity> {
     private static final VoxelShape SHAPE = Block.box(0.0,5.0,0.0,16.0,10.0,16.0);
 
     public SailTorsionSpring(final Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(POWERED, false));
     }
 
     @Override
     protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(POWERED));
+        builder.add(BlockStateProperties.AXIS);
+        builder.add(BlockStateProperties.FACING);
     }
 
     @Override
@@ -53,47 +52,14 @@ public class SailTorsionSpring extends DirectionalKineticBlock implements IBE<Sa
 
     @Override
     public BlockState getStateForPlacement(final BlockPlaceContext context) {
-        return super.getStateForPlacement(context).setValue(POWERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));
+        Direction.Axis axis = context.getHorizontalDirection().getAxis();
+        Direction direction = Direction.getFacingAxis(context.getPlayer(), axis);
+        return this.defaultBlockState().setValue(BlockStateProperties.AXIS, axis).setValue(BlockStateProperties.FACING, direction);
     }
 
     @Override
     protected VoxelShape getShape(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos, final CollisionContext collisionContext) {
         return SHAPE;
-    }
-
-    @Override
-    protected void neighborChanged(final BlockState blockState, final Level level, final BlockPos blockPos, final Block block, final BlockPos blockPos2, final boolean bl) {
-        super.neighborChanged(blockState, level, blockPos, block, blockPos2, bl);
-        final boolean signal = level.hasNeighborSignal(blockPos);
-        if (signal != blockState.getValue(POWERED)) {
-            level.setBlock(blockPos, blockState.setValue(POWERED, signal), 2); // idk what this magic number does... copied from DiodeBlock
-            this.withBlockEntityDo(level, blockPos, SailTorsionSpringEntity::onSignalChanged);
-        }
-    }
-
-    @Override
-    protected boolean hasAnalogOutputSignal(final BlockState blockState) {
-        return blockState.getValue(FACING).getAxis().isHorizontal();
-    }
-
-    @Override
-    public int getAnalogOutputSignalFrom(final BlockState blockState, final Level level, final BlockPos blockPos, final Direction dir) {
-        final Direction facing = blockState.getValue(FACING);
-        final SailTorsionSpringEntity be = this.getBlockEntity(level, blockPos);
-
-        final float frac = Mth.clamp (be.getAngle() / be.angleInput.getValue(), -1, 1);
-        if (Math.abs(be.getAngle()) < 0.99) {
-            return 0;
-        }
-        final int value = (int) (((frac < 0 ? Math.floor(frac * 15) : Math.ceil(frac * 15)) *
-                ((facing.getStepX() == 1 || facing.getStepZ() == 1) ? -1 : 1)));
-
-        if (facing.getClockWise() == dir && value > 0) {
-            return value;
-        } else if (facing.getCounterClockWise() == dir && value < 0) {
-            return -value;
-        }
-        return 0;
     }
 
     @Override
@@ -109,10 +75,5 @@ public class SailTorsionSpring extends DirectionalKineticBlock implements IBE<Sa
     @Override
     public BlockEntityType<? extends SailTorsionSpringEntity> getBlockEntityType() {
         return ModBlockEntities.SAIL_TORSION_SPRING_BE.get();
-    }
-
-    @Override
-    public IRotate getExtraKineticsRotationConfiguration() {
-        return SailTorsionSpringEntity.Output.CONFIG;
     }
 }

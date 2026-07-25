@@ -34,16 +34,16 @@ public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStra
         super(properties);
     }
 
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.AXIS);
+        builder.add(BlockStateProperties.FACING);
+    }
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction.Axis axis = context.getHorizontalDirection().getAxis();
         Direction direction = Direction.getFacingAxis(context.getPlayer(), axis);
         return this.defaultBlockState().setValue(BlockStateProperties.AXIS, axis).setValue(BlockStateProperties.FACING, direction);
-    }
-
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.AXIS);
-        builder.add(BlockStateProperties.FACING);
     }
 
     @Override
@@ -78,7 +78,6 @@ public class SailShaftStraight extends KineticBlock implements IBE<SailShaftStra
     public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_, CollisionContext p_220053_4_) {
         return SHAPE;
     }
-
 
     @Override
     public @NotNull Direction sable$getNormal(final BlockState state) {

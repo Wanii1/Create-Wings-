@@ -22,6 +22,13 @@ public class ModBlocks {
     public static BlockEntry<SailShaftAngled> SAIL_SHAFT_ANGLED;
     public static BlockEntry<SailGlue> SAIL_GLUE;
     public static BlockEntry<SailTorsionSpring> SAIL_TORSION_SPRING;
+    public static BlockEntry<AngledSymetricalSail> ANGLED_SYMETRICAL_SAIL;
+    public static BlockEntry<SymetricalSailShaftStraight> SYMETRICAL_SAIL_SHAFT_STRAIGHT;
+    public static BlockEntry<SymetricalSailShaftAngled> SYMETRICAL_SAIL_SHAFT_ANGLED;
+    public static BlockEntry<SymetricalSailGlue> SYMETRICAL_SAIL_GLUE;
+    public static BlockEntry<VerticalSymetricalSailShaftStraight> VERTICAL_SYMETRICAL_SAIL_SHAFT_STRAIGHT;
+    public static BlockEntry<VerticalSymetricalSailShaftAngled> VERTICAL_SYMETRICAL_SAIL_SHAFT_ANGLED;
+    public static BlockEntry<VerticalSymetricalSailGlue> VERTICAL_SYMETRICAL_SAIL_GLUE;
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block){
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);
@@ -39,6 +46,13 @@ public class ModBlocks {
         SAIL_SHAFT_ANGLED = WingsPlus.REGISTRATE.block("sail_shaft_angled", SailShaftAngled::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
         SAIL_GLUE = WingsPlus.REGISTRATE.block("sail_glue", SailGlue::new).simpleItem().register();
         SAIL_TORSION_SPRING = WingsPlus.REGISTRATE.block("sail_torsion_spring", SailTorsionSpring::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
+        ANGLED_SYMETRICAL_SAIL = WingsPlus.REGISTRATE.block("angled_symetrical_sail", AngledSymetricalSail::new).simpleItem().register();
+        SYMETRICAL_SAIL_SHAFT_STRAIGHT = WingsPlus.REGISTRATE.block("symetrical_sail_shaft_straight", SymetricalSailShaftStraight::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
+        SYMETRICAL_SAIL_SHAFT_ANGLED = WingsPlus.REGISTRATE.block("symetrical_sail_shaft_angled", SymetricalSailShaftAngled::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
+        SYMETRICAL_SAIL_GLUE = WingsPlus.REGISTRATE.block("symetrical_sail_glue", SymetricalSailGlue::new).simpleItem().register();
+        VERTICAL_SYMETRICAL_SAIL_SHAFT_STRAIGHT = WingsPlus.REGISTRATE.block("vertical_symetrical_sail_shaft_straight", VerticalSymetricalSailShaftStraight::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
+        VERTICAL_SYMETRICAL_SAIL_SHAFT_ANGLED = WingsPlus.REGISTRATE.block("vertical_symetrical_sail_shaft_angled", VerticalSymetricalSailShaftAngled::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
+        VERTICAL_SYMETRICAL_SAIL_GLUE = WingsPlus.REGISTRATE.block("vertical_symetrical_sail_glue", VerticalSymetricalSailGlue::new).simpleItem().register();
         BLOCKS.register(eventBus);
     }
 

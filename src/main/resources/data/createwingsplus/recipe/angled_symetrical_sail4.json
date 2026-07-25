@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "W": {
+      "item": "simulated:white_symmetric_sail"
+    }
+  },
+  "pattern": [
+    "W ",
+    "WW"
+  ],
+  "result": {
+    "count": 3,
+    "id": "createwingsplus:angled_symetrical_sail"
+  }
+}

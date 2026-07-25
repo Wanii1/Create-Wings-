@@ -1,8 +1,10 @@
 {
   "selector": "createwingsplus:sail_shaft_straight",
-  "selector": "createwingsplus:sail_shaft_straight",
   "selector": "createwingsplus:sail_shaft_angled",
   "selector": "createwingsplus:sail_glue",
+  "selector": "createwingsplus:symetrical_sail_shaft_straight",
+  "selector": "createwingsplus:symetrical_sail_shaft_angled",
+  "selector": "createwingsplus:symetrical_sail_glue",
   "priority": 1005,
   "properties": {
     "sable:mass": 0.25

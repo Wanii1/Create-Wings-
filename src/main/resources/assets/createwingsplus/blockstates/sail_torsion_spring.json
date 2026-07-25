@@ -1,19 +1,19 @@
 {
   "variants": {
     "facing=north": {
-      "model": "createwingsplus:block/sail_torsion_spring"
-    },
-    "facing=south": {
       "model": "createwingsplus:block/sail_torsion_spring",
       "y": 180
     },
+    "facing=south": {
+      "model": "createwingsplus:block/sail_torsion_spring"
+    },
     "facing=east": {
       "model": "createwingsplus:block/sail_torsion_spring",
-      "y": 90
+      "y": 270
     },
     "facing=west": {
       "model": "createwingsplus:block/sail_torsion_spring",
-      "y": 270
+      "y": 90
     },
     "facing=up": {
       "model": "createwingsplus:block/sail_torsion_spring"
