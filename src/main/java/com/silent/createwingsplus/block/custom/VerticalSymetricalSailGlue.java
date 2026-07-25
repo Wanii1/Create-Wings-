@@ -7,6 +7,7 @@ import com.simibubi.create.content.contraptions.bearing.BearingBlock;
 import com.simibubi.create.foundation.block.IBE;
 
 import dev.ryanhcode.sable.api.block.BlockSubLevelLiftProvider;
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -28,10 +29,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import static com.silent.createwingsplus.block.entity.VerticalSymetricalSailShaftAngledEntity.FACING;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.UP;
+
 
 public class VerticalSymetricalSailGlue extends BearingBlock implements IBE<VerticalSymetricalSailGlueEntity>, BlockSubLevelLiftProvider {
 
-    private static final VoxelShape SHAPE = Block.box(0.0,5.0,0.0,16.0,10.0,16.0);
+    private static final VoxelShape box = Block.box(5.5, 0.0, 0.0, 10.5, 16.0, 16.0);
+    private static final VoxelShaper SHAPE = VoxelShaper.forDirectional(box, Direction.NORTH);
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
 
     public VerticalSymetricalSailGlue(Properties properties) {
@@ -44,22 +49,36 @@ public class VerticalSymetricalSailGlue extends BearingBlock implements IBE<Vert
         Axis vertical = context.getNearestLookingDirection().getAxis();
         Axis horizontal = context.getHorizontalDirection().getAxis();
         Direction finalDirection = Direction.getFacingAxis(context.getPlayer(), axis);
+        boolean up = false;
 
         if (vertical == Axis.Y){
-            if (horizontal == Axis.X){
-                finalDirection = Direction.DOWN;
+            if (context.getNearestLookingDirection() == Direction.DOWN){
+                if (horizontal == Axis.X){
+                    finalDirection = Direction.DOWN;
+                }
+                else {
+                    finalDirection = Direction.DOWN;
+                    up = true;
+                }
             }
-            else {
-                finalDirection = Direction.UP;
+            else if (context.getNearestLookingDirection() == Direction.UP){
+                if (horizontal == Axis.X){
+                    finalDirection = Direction.UP;
+                }
+                else {
+                    finalDirection = Direction.UP;
+                    up = true;
+                }
             }
         }
 
-        return this.defaultBlockState().setValue(BlockStateProperties.AXIS, axis).setValue(BlockStateProperties.FACING, finalDirection);
+        return this.defaultBlockState().setValue(BlockStateProperties.AXIS, axis).setValue(BlockStateProperties.FACING, finalDirection.getOpposite()).setValue(BlockStateProperties.UP, up);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.AXIS);
         builder.add(BlockStateProperties.FACING);
+        builder.add(UP);
     }
 
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
@@ -95,7 +114,16 @@ public class VerticalSymetricalSailGlue extends BearingBlock implements IBE<Vert
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_, CollisionContext p_220053_4_) {
-        return SHAPE;
+        if (state.getValue(BlockStateProperties.FACING) == Direction.UP || state.getValue(BlockStateProperties.FACING) == Direction.DOWN) {
+            if(state.getValue(BlockStateProperties.UP)){
+                return SHAPE.get(Direction.NORTH);
+            }
+            else {
+                return SHAPE.get(Direction.WEST);
+            }
+        }
+
+        return SHAPE.get(state.getValue(FACING));
     }
 
 

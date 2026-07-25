@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Property;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,34 +61,11 @@ public abstract class AbstractAngleShaftVerticalSymetricalBlock extends Directio
 
     public BlockState getBlockstateConnectingDirections(Direction direction1, Direction direction2) {
         boolean axisAlongFirst = direction1.getAxisDirection() == direction2.getAxisDirection();
-        Map<Direction.Axis, Direction> directionsForEachAxis = Map.of(direction1.getAxis(), direction1, direction2.getAxis(), direction2);
-        List<Direction.Axis> axes = new ArrayList();
-        axes.addAll(List.of(Direction.Axis.values()));
-        axes.remove(direction1.getAxis());
-        axes.remove(direction2.getAxis());
-        Direction.Axis primaryAxis;
-        switch ((Direction.Axis)axes.get(0)) {
-            case X -> primaryAxis = axisAlongFirst ? Direction.Axis.X : Direction.Axis.Z;
-            case Y -> primaryAxis = axisAlongFirst ? Direction.Axis.Z : Direction.Axis.X;
-            case Z -> primaryAxis = axisAlongFirst ? Direction.Axis.X : Direction.Axis.Z;
-            default -> throw new IllegalStateException("Unknown axis");
-        }
-
-        return (BlockState)((BlockState)this.defaultBlockState().setValue(DirectionalKineticBlock.FACING, (Direction)directionsForEachAxis.get(primaryAxis))).setValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, axisAlongFirst);
+        return (BlockState)((BlockState)this.defaultBlockState().setValue((Property)DirectionalKineticBlock.FACING, (Comparable)direction1.getOpposite())).setValue((Property)DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, (Comparable)Boolean.valueOf(axisAlongFirst));
     }
 
     public static boolean isPositiveDirection(Direction direction) {
         return Direction.get(Direction.AxisDirection.POSITIVE, direction.getAxis()) == direction;
-    }
-
-    public BlockState rotate(BlockState state, Rotation rot) {
-        Direction[] directions = getDirectionsConnectedByState(state);
-        return this.getBlockstateConnectingDirections(rot.rotate(directions[0]), rot.rotate(directions[1]));
-    }
-
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        Direction[] directions = getDirectionsConnectedByState(state);
-        return this.getBlockstateConnectingDirections(mirror.getRotation(directions[0]).rotate(directions[0]), mirror.getRotation(directions[1]).rotate(directions[1]));
     }
 
     public BlockState transform(BlockState state, StructureTransform transform) {
