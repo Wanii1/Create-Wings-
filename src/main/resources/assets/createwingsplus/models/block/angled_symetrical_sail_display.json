@@ -4,8 +4,8 @@
 	"texture_size": [64, 64],
 	"render_type": "minecraft:cutout",
 	"textures": {
-		"1": "createwingsplus:block/white_angled_sail",
-		"particle": "createwingsplus:block/white_angled_sail"
+		"1": "createwingsplus:block/angled_sail/white_angled_sail",
+		"particle": "createwingsplus:block/angled_sail/white_angled_sail"
 	},
 	"elements": [
 		{
