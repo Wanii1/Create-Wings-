@@ -1,0 +1,9 @@
+{
+	"parent": "createwingsplus:block/sail_shaft_straight",
+	"textures": {
+		"0": "createwingsplus:block/shaft_straight/shaft_straight_purple",
+		"1": "create:block/sail/frame",
+		"2": "create:block/andesite_casing",
+		"particle": "createwingsplus:block/shaft_straight/shaft_straight_purple"
+	}
+}

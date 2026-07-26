@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "createwingsplus:block/brown_sail_shaft_straight"
+    },
+    "facing=south": {
+      "model": "createwingsplus:block/brown_sail_shaft_straight",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "createwingsplus:block/brown_sail_shaft_straight",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "createwingsplus:block/brown_sail_shaft_straight",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "createwingsplus:block/brown_sail_shaft_straight"
+    },
+    "facing=down": {
+      "model": "createwingsplus:block/brown_sail_shaft_straight"
+    }
+  }
+}
