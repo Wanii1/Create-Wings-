@@ -2,11 +2,11 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "createwingsplus:block/canvas_white_shaft_straight",
+		"0": "createwingsplus:block/shaft_straight/shaft_straight_white",
 		"1": "createwingsplus:block/frame_glue",
 		"2": "create:block/sail/frame",
 		"3": "create:block/andesite_casing",
-		"particle": "createwingsplus:block/canvas_white_shaft_straight"
+		"particle": "createwingsplus:block/shaft_straight/shaft_straight_white"
 	},
 	"elements": [
 		{
