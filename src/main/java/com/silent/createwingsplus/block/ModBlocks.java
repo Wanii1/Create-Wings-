@@ -40,10 +40,24 @@ public class ModBlocks {
         return REGISTRATE.block(colourName + "_angled_sail", p -> AngledSail.withCanvas(p, colour))
                 .blockstate((c, p) -> p.directionalBlock(c.get(), p.models()
                         .withExistingParent(colourName + "_angled_sail", p.modLoc("block/angled_sail"))
-                        .texture("0", p.modLoc("block/optimized_texture_" + colourName)))).simpleItem().register();
+                        .texture("0", p.modLoc("block/angled_sail_" + colourName)))).simpleItem().register();
     });
 
-    public static BlockEntry<SailShaftStraight> SAIL_SHAFT_STRAIGHT;
+    public static final BlockEntry<SailShaftStraight> SAIL_SHAFT_STRAIGHT =
+            REGISTRATE.block("sail_shaft_straight", p -> SailShaftStraight.withCanvas(p, DyeColor.WHITE))
+                    .simpleItem().register();
+
+    public static final DyedBlockList<SailShaftStraight> DYED_SAIL_SHAFT_STRAIGHTS = new DyedBlockList<>(colour -> {
+        if (colour == DyeColor.WHITE) {
+            return SAIL_SHAFT_STRAIGHT;
+        }
+        String colourName = colour.getSerializedName();
+        return REGISTRATE.block(colourName + "_sail_shaft_straight", p -> SailShaftStraight.withCanvas(p, colour))
+                .blockstate((c, p) -> p.directionalBlock(c.get(), p.models()
+                        .withExistingParent(colourName + "_angled_sail", p.modLoc("block/angled_sail"))
+                        .texture("0", p.modLoc("block/canvas_" + colourName + "_shaft_straight")))).simpleItem().register();
+    });
+
     public static BlockEntry<SailShaftAngled> SAIL_SHAFT_ANGLED;
     public static BlockEntry<SailGlue> SAIL_GLUE;
     public static BlockEntry<SailTorsionSpring> SAIL_TORSION_SPRING;
@@ -71,7 +85,7 @@ public class ModBlocks {
 
 
 
-        SAIL_SHAFT_STRAIGHT = REGISTRATE.block("sail_shaft_straight", SailShaftStraight::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
+        //SAIL_SHAFT_STRAIGHT = REGISTRATE.block("sail_shaft_straight", SailShaftStraight::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
         SAIL_SHAFT_ANGLED = REGISTRATE.block("sail_shaft_angled", SailShaftAngled::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();
         SAIL_GLUE = REGISTRATE.block("sail_glue", SailGlue::new).simpleItem().register();
         SAIL_TORSION_SPRING = REGISTRATE.block("sail_torsion_spring", SailTorsionSpring::new).blockstate(BlockStateGen.axisBlockProvider(false)).simpleItem().register();

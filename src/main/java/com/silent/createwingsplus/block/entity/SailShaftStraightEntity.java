@@ -5,6 +5,7 @@ import com.simibubi.create.content.kinetics.simpleRelays.SimpleKineticBlockEntit
 import com.simibubi.create.content.kinetics.transmission.sequencer.SequencedGearshiftBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
@@ -20,8 +21,8 @@ public class SailShaftStraightEntity extends SimpleKineticBlockEntity {
 
     public SequencedGearshiftBlockEntity.SequenceContext sequenceContext;
 
-    public SailShaftStraightEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.SAIL_SHAFT_STRAIGHT_BE.get(), pos, state);
+    public SailShaftStraightEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
         effects = new KineticEffectHandler(this);
         updateSpeed = true;
     }
