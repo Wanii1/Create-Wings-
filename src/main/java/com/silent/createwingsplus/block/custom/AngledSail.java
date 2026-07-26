@@ -1,11 +1,17 @@
 package com.silent.createwingsplus.block.custom;
 
+import com.silent.createwingsplus.block.ModBlocks;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.bearing.SailBlock;
+import com.simibubi.create.foundation.utility.BlockHelper;
+
 import dev.ryanhcode.sable.api.block.BlockSubLevelLiftProvider;
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -40,14 +46,27 @@ public class AngledSail extends SailBlock implements BlockSubLevelLiftProvider {
 
     @Override
     public void applyDye(BlockState state, Level world, BlockPos pos, Vec3 hit, @Nullable DyeColor color) {
+        BlockState newState = (color == null ? AllBlocks.SAIL_FRAME : ModBlocks.DYED_ANGLED_SAILS.get(color)).getDefaultState();
+        newState = BlockHelper.copyProperties(state, newState);
+
+        if (state !=  newState){
+            world.setBlockAndUpdate(pos, newState);
+        }
         return;
     }
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        DyeColor color = DyeColor.getColor(stack);
-        if (color != null) {
+        
+        if (frame) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        DyeColor color = DyeColor.getColor(stack);
+        if (color != null){
+            if (!level.isClientSide)
+                level.playSound(null, pos, SoundEvents.DYE_USE, SoundSource.BLOCKS, 1.0f, 1.1f - level.random.nextFloat() * .2f);
+            applyDye(state, level, pos, hitResult.getLocation(), color);
+            return ItemInteractionResult.SUCCESS;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
