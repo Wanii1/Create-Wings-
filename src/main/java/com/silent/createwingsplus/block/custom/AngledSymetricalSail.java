@@ -26,8 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AngledSymetricalSail extends SailBlock implements BlockSubLevelLiftProvider {
-    private static final VoxelShape SHAPE1 = Block.box(0.0,5.0,0.0,8.0,10.0,16.0);
-    private static final VoxelShape SHAPE2 = Block.box(8.0,5.0,0.0,16.0,10.0,8.0);
+    private static final VoxelShape SHAPE1 = Block.box(0.0,6.0,0.0,8.0,10.0,16.0);
+    private static final VoxelShape SHAPE2 = Block.box(8.0,6.0,0.0,16.0,10.0,8.0);
     private static final VoxelShape SHAPE = Shapes.join(SHAPE1, SHAPE2, BooleanOp.OR);
     private static final VoxelShaper CSHAPE = VoxelShaper.forDirectional(SHAPE, Direction.NORTH);
     public AngledSymetricalSail(Properties properties) {

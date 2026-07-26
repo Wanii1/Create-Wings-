@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SymetricalSailShaftAngled extends AbstractAngleShaftSymetricalBlock implements IBE<SymetricalSailShaftAngledEntity>, BlockSubLevelLiftProvider {
 
-    private static final VoxelShape SHAPE = Block.box(0.0,5.0,0.0,16.0,10.0,16.0);
+    private static final VoxelShape SHAPE = Block.box(0.0,6.0,0.0,16.0,10.0,16.0);
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
 
     public SymetricalSailShaftAngled(Properties properties) {

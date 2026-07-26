@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SymetricalSailGlue extends BearingBlock implements IBE<SymetricalSailGlueEntity>, BlockSubLevelLiftProvider {
 
-    private static final VoxelShape SHAPE = Block.box(0.0,5.0,0.0,16.0,10.0,16.0);
+    private static final VoxelShape SHAPE = Block.box(0.0,6.0,0.0,16.0,10.0,16.0);
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
 
     public SymetricalSailGlue(Properties properties) {

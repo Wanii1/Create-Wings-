@@ -1,33 +1,33 @@
 {
   "variants": {
     "facing=north,up=false": {
-      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled"
+      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled_up"
     },
     "facing=south,up=false": {
-      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled",
+      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled_up",
       "y": 180
     },
     "facing=east,up=false": {
-      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled",
+      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled_up",
       "y": 90
     },
     "facing=west,up=false": {
-      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled",
+      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled_up",
       "y": 270
     },
     "facing=north,up=true": {
-      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled_up"
+      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled"
     },
     "facing=south,up=true": {
-      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled_up",
+      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled",
       "y": 180
     },
     "facing=east,up=true": {
-      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled_up",
+      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled",
       "y": 90
     },
     "facing=west,up=true": {
-      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled_up",
+      "model": "createwingsplus:block/vertical_symetrical_sail_shaft_angled",
       "y": 270
     }
   }
