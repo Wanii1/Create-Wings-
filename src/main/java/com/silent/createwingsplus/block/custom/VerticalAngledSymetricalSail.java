@@ -27,13 +27,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.AXIS;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.UP;
 
 public class VerticalAngledSymetricalSail extends SailBlock implements BlockSubLevelLiftProvider {
-    private static final VoxelShape SHAPE1 = Block.box(0.0,5.0,0.0,8.0,10.0,16.0);
-    private static final VoxelShape SHAPE2 = Block.box(8.0,5.0,0.0,16.0,10.0,8.0);
-    private static final VoxelShape SHAPE = Shapes.join(SHAPE1, SHAPE2, BooleanOp.OR);
-    private static final VoxelShaper CSHAPE = VoxelShaper.forDirectional(SHAPE, Direction.NORTH);
+    private static final VoxelShape SHAPE1 = Block.box(6.0,0.0,0.0,10.0,8.0,16.0); //0.0,5.0,0.0,7.5,10.0,16.0
+    private static final VoxelShape SHAPE2 = Block.box(6.0,0.0,0.0,10.0,16.0,8.0); //8.5,5.0,0.0,16.0,10.0,8.0
+    private static final VoxelShape SHAPE3 = Block.box(6.0,8.0,0.0,10.0,16.0,16.0);
+    private static final VoxelShape SHAPEDOWN = Shapes.join(SHAPE1, SHAPE2, BooleanOp.OR);
+    private static final VoxelShape SHAPEUP = Shapes.join(SHAPE3, SHAPE2, BooleanOp.OR);
+    private static final VoxelShaper CSHAPE1 = VoxelShaper.forDirectional(SHAPEDOWN, Direction.NORTH);
+    private static final VoxelShaper CSHAPE2 = VoxelShaper.forDirectional(SHAPEUP, Direction.NORTH);
     public VerticalAngledSymetricalSail(Properties properties) {
         super(properties, false, DyeColor.WHITE);
     }
@@ -79,17 +83,26 @@ public class VerticalAngledSymetricalSail extends SailBlock implements BlockSubL
     }
 
     @Override
-    public @NotNull Direction sable$getNormal(final BlockState state) {
-        return Direction.DOWN;
+    public @NotNull Direction sable$getNormal(final BlockState blockState) {
+        return Direction.get(Direction.AxisDirection.POSITIVE, blockState.getValue(AXIS));
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter p_220053_2_, BlockPos p_220053_3_, CollisionContext p_220053_4_) {
-        if (state.getValue(BlockStateProperties.FACING) == Direction.UP || state.getValue(BlockStateProperties.FACING) == Direction.DOWN) {
-            return CSHAPE.get(Direction.NORTH);
-        }
+        if (state.getValue(BlockStateProperties.UP)){
+            if (state.getValue(BlockStateProperties.FACING) == Direction.UP || state.getValue(BlockStateProperties.FACING) == Direction.DOWN) {
+                return CSHAPE2.get(Direction.NORTH);
+            }
 
-        return CSHAPE.get(state.getValue(FACING));
+            return CSHAPE2.get(state.getValue(FACING));
+        }
+        else {
+            if (state.getValue(BlockStateProperties.FACING) == Direction.UP || state.getValue(BlockStateProperties.FACING) == Direction.DOWN) {
+                return CSHAPE1.get(Direction.NORTH);
+            }
+
+            return CSHAPE1.get(state.getValue(FACING));
+        }
     }
 
     @Override

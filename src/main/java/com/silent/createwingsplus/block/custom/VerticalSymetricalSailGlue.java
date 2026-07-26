@@ -35,7 +35,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class VerticalSymetricalSailGlue extends BearingBlock implements IBE<VerticalSymetricalSailGlueEntity>, BlockSubLevelLiftProvider {
 
-    private static final VoxelShape box = Block.box(5.5, 0.0, 0.0, 10.5, 16.0, 16.0);
+    private static final VoxelShape box = Block.box(6, 0.0, 0.0, 10, 16.0, 16.0);
     private static final VoxelShaper SHAPE = VoxelShaper.forDirectional(box, Direction.NORTH);
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
 
@@ -128,8 +128,8 @@ public class VerticalSymetricalSailGlue extends BearingBlock implements IBE<Vert
 
 
     @Override
-    public @NotNull Direction sable$getNormal(final BlockState state) {
-        return Direction.DOWN;
+    public @NotNull Direction sable$getNormal(final BlockState blockState) {
+        return Direction.get(Direction.AxisDirection.POSITIVE, blockState.getValue(AXIS));
     }
 
     @Override

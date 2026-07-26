@@ -10,5 +10,6 @@
   "block.createwingsplus.symetrical_sail_glue": "Mechanical Bearing Symmetrical Sail",
   "block.createwingsplus.vertical_symetrical_sail_shaft_straight": "Vertical Straight Shaft Symmetrical Sail",
   "block.createwingsplus.vertical_symetrical_sail_shaft_angled": "Vertical Angled Shaft Symmetrical Sail",
-  "block.createwingsplus.vertical_symetrical_sail_glue": "Vertical Mechanical Bearing Symmetrical Sail"
+  "block.createwingsplus.vertical_symetrical_sail_glue": "Vertical Mechanical Bearing Symmetrical Sail",
+  "block.createwingsplus.vertical_angled_symetrical_sail": "Vertical Angled Symmetrical Sail"
 }

@@ -30,10 +30,13 @@ public class AngledSail extends SailBlock implements BlockSubLevelLiftProvider {
     private static final VoxelShape SHAPE2 = Block.box(8.0,5.0,0.0,16.0,10.0,8.0);
     private static final VoxelShape SHAPE = Shapes.join(SHAPE1, SHAPE2, BooleanOp.OR);
     private static final VoxelShaper CSHAPE = VoxelShaper.forDirectional(SHAPE, Direction.NORTH);
-    public AngledSail(Properties properties) {
+    public AngledSail(Properties properties, DyeColor color) {
         super(properties, false, DyeColor.WHITE);
     }
 
+    public static AngledSail withCanvas(Properties properties, DyeColor color) {
+        return new AngledSail(properties, color);
+    }
 
     @Override
     public void applyDye(BlockState state, Level world, BlockPos pos, Vec3 hit, @Nullable DyeColor color) {
