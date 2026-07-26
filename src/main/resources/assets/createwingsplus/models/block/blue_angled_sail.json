@@ -1,0 +1,7 @@
+{
+	"parent": "createwingsplus:block/angled_sail_display",
+	"textures": {
+		"1": "createwingsplus:block/optimized_texture_blue",
+		"particle": "createwingsplus:block/optimized_texture_blue"
+	}
+}

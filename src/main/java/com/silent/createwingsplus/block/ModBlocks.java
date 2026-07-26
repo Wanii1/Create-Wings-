@@ -1,7 +1,6 @@
 package com.silent.createwingsplus.block;
 
 import com.silent.createwingsplus.WingsPlus;
-import com.silent.createwingsplus.WingsPlusStateService;
 import com.silent.createwingsplus.block.custom.*;
 import com.silent.createwingsplus.item.ModItems;
 import com.simibubi.create.AllTags;
@@ -31,17 +30,17 @@ public class ModBlocks {
 
     public static final BlockEntry<AngledSail> ANGLED_SAIL =
             REGISTRATE.block("angled_sail", p -> AngledSail.withCanvas(p, DyeColor.WHITE))
-                    .register();
+                    .simpleItem().register();
 
     public static final DyedBlockList<AngledSail> DYED_ANGLED_SAILS = new DyedBlockList<>(colour -> {
         if (colour == DyeColor.WHITE) {
             return ANGLED_SAIL;
         }
         String colourName = colour.getSerializedName();
-        return REGISTRATE.block(colourName + "_angled_sail", p -> SailBlock.withCanvas(p, colour))
+        return REGISTRATE.block(colourName + "_angled_sail", p -> AngledSail.withCanvas(p, colour))
                 .blockstate((c, p) -> p.directionalBlock(c.get(), p.models()
-                        .withExistingParent(colourName + "_sail", p.modLoc("block/white_sail"))
-                        .texture("0", p.modLoc("block/sail/canvas_" + colourName)))).register();
+                        .withExistingParent(colourName + "_angled_sail", p.modLoc("block/angled_sail"))
+                        .texture("0", p.modLoc("block/optimized_texture_" + colourName)))).simpleItem().register();
     });
 
     public static BlockEntry<SailShaftStraight> SAIL_SHAFT_STRAIGHT;
@@ -68,7 +67,7 @@ public class ModBlocks {
     }
 
     public static void register(IEventBus eventBus){
-        ANGLED_SAIL = REGISTRATE.block("angled_sail", AngledSail::new).simpleItem().register();
+        //ANGLED_SAIL = REGISTRATE.block("angled_sail", AngledSail::new).simpleItem().register();
 
 
 
